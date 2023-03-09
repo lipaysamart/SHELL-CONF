@@ -5,6 +5,11 @@
 # usage: 监控网路丢包率和延迟 -s 是一个ping包的大小 -W 是延迟timeout -c 是发生多少数据包。
 # example：
 ######################
+# 设置 ping 命令执行的次数（c_times）和需要 ping 的 IP 地址列表（ip_arr）。
+# 遍历 IP 列表，对每个 IP 地址执行 ping 命令，将 ping 响应存储在 result 变量中。
+# 检查 result 是否为空。如果是，则表示 ping 失败。在这种情况下，将 drop_packge 的值设置为 101，表示丢失所有数据包，将 current_time 的值设置为 1000，表示无响应。然后，使用 curl 命令将这些值作为二进制数据发送到 Prometheus metrics API。
+# 如果 result 不为空，则提取丢包率（lostpk）和往返时延（rtt）并计算出它们的平均值。然后，将 drop_packge 和 current_time 的值分别设置为丢包率和平均往返时间，并使用 curl 命令将这些值作为二进制数据发送到 Prometheus metrics API。
+# 在每次循环中，打印出 IP 地址、丢包率和平均往返时间的值。
 #ping发包数
 c_times=100
 #IP列表数组，多IP定义（ 10.20.30.4  40.30.20.10 ） 
